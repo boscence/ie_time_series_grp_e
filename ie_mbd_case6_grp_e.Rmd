@@ -1,0 +1,59 @@
+---
+title: "Time Series Analysis, Case 6"
+author: "Andew, Carmen, Jimmy, Naresh"
+date: "23 January 2016"
+output: html_document
+---
+
+We are going to analyze six simulated time series, and in all of them we have to decide,
+in a visual and graphical way, if they are or not Covariance-Stationary (CS), White Noise
+(WN), Strict White Noise (SWN) or Gaussian White Noise (GWN). We will also analyze
+the real time series for the daily Brent Dated spot prices and its corresponding returns.
+
+```{r,echo=FALSE}
+setwd("/home/ab/Documents/MBD/time_series/case6")
+```
+
+First, we load the two datasets
+```{r}
+real = read.csv("Session6real.csv", sep = "",dec = ",")
+sim = read.csv("Session6sim.csv", sep = ";",dec = ",")
+```
+
+
+##Analysis of the Real Data
+###Step 1. Plot the series and compute basic statistics
+First we compute the mean, standard deviation and the variance of the time series. We then plot the series and see the data is not stationary. The variance is different across the time series.
+```{r}
+summary(real$brent...bbl.)
+sd(real$brent...bbl.)
+var(real$brent...bbl.)
+ts.plot(real, main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
+```
+
+###Step 2. Plot the acf and pacf for the series
+We now plot the Auto Correlation Function and the Partial AutoCorrelation Function
+```{r}
+acf(real, main = "Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
+acf(real,type = "partial", main = "Partial Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
+
+```
+
+
+###Step 3. Test Normality
+
+1. A stochastic process is covariance stationary (or weak stationary) if
+a. E(Yt) = µ, for all t
+b. Var(Yt) = σy
+2
+, for all t
+c. Cov(Yt
+,Yt-h) = ϒ(h), for all t and h
+2. A process is white noise if it is
+a. Covariance Stationary
+b. Uncorrelated
+c. Zero mean
+3. A process is strict white noise if it is
+a. Covariance Stationary
+b. Zero mean
+c. Independent and identically distributed (iid)
