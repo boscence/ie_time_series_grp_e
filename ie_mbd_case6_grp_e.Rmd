@@ -17,44 +17,55 @@ setwd("/home/ab/Documents/MBD/time_series/case6")
 First, we load the two datasets
 ```{r}
 real = read.csv("Session6real.csv", sep = "",dec = ",")
+names(real) = "price"
 sim = read.csv("Session6sim.csv", sep = ";",dec = ",")
 ```
 
 
 ##Analysis of the Real Data
-###Step 1. Plot the series and compute basic statistics
-First we compute the mean, standard deviation and the variance of the time series. We then plot the series and see the data is not stationary. The variance is different across the time series so can assume it is not stationary (is this right guys?). So we
+We need to add a difference value that look at the difference between the price and the previous day. To do this we create a lag of t-1 and then calculate the different.
 ```{r}
-summary(real$brent...bbl.)
-sd(real$brent...bbl.)
-var(real$brent...bbl.)
-ts.plot(real, main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
-ts.plot(log(real), main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
+real$lag = lag(real$price,1)
+real$diff = real$price - real$lag
+ts.plot(real$diff)
+```
+
+
+###Step 1. Plot the series and compute basic statistics
+First we compute the mean, standard deviation and the variance of the time series. We then plot the series and see the data is not stationary. The variance is different across the time series so can assume it is not stationary (is this right guys?). 
+```{r}
+summary(real$price)
+sd(real$price)
+var(real$price)
+ts.plot(real$price, main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
+ts.plot(real$diff, main = "Time Series Plot of Difference in Daily Brent Spot Prices ($/bbl)")
 ```
 
 ###Step 2. Plot the acf and pacf for the series
 We now plot the Auto Correlation Function and the Partial AutoCorrelation Function
 ```{r}
-acf(real, main = "Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
-acf(real,type = "partial", main = "Partial Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
-
+acf(real$price, main = "Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
+acf(real$price,type = "partial", main = "Partial Auto Correlation Function Plot of Daily Brent Spot Prices ($/bbl)")
+names(real)
+acf(real$price, main = "Auto Correlation Function Plot of Difference Daily Brent Spot Prices ($/bbl)")
+acf(real$price,type = "partial", main = "Partial Auto Correlation Function Plot of Difference Daily Brent Spot Prices ($/bbl)")
 ```
 
 
 ###Step 3. Test Normality
 
 1. A stochastic process is covariance stationary (or weak stationary) if
-a. E(Yt) = µ, for all t
-b. Var(Yt) = σy
-2
-, for all t
-c. Cov(Yt
-,Yt-h) = ϒ(h), for all t and h
+  a. E(Yt) = µ, for all t
+  b. Var(Yt) = σy2, for all t
+  c. Cov(Yt,Yt-h) = ϒ(h), for all t and h
 2. A process is white noise if it is
-a. Covariance Stationary
-b. Uncorrelated
-c. Zero mean
+  a. Covariance Stationary
+  b. Uncorrelated
+  c. Zero mean
 3. A process is strict white noise if it is
-a. Covariance Stationary
-b. Zero mean
-c. Independent and identically distributed (iid)
+  a. Covariance Stationary
+  b. Zero mean
+  c. Independent and identically distributed (iid)
+
+ts.plot(log(real), main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
+
