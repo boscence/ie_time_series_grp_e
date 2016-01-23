@@ -23,12 +23,13 @@ sim = read.csv("Session6sim.csv", sep = ";",dec = ",")
 
 ##Analysis of the Real Data
 ###Step 1. Plot the series and compute basic statistics
-First we compute the mean, standard deviation and the variance of the time series. We then plot the series and see the data is not stationary. The variance is different across the time series.
+First we compute the mean, standard deviation and the variance of the time series. We then plot the series and see the data is not stationary. The variance is different across the time series so can assume it is not stationary (is this right guys?). So we
 ```{r}
 summary(real$brent...bbl.)
 sd(real$brent...bbl.)
 var(real$brent...bbl.)
 ts.plot(real, main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
+ts.plot(log(real), main = "Time Series Plot of Daily Brent Spot Prices ($/bbl)")
 ```
 
 ###Step 2. Plot the acf and pacf for the series
